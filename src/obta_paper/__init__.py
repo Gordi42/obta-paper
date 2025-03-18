@@ -23,6 +23,7 @@ from lazypimp import setup
 #  Disable lazy loading for type checking
 # ================================================================
 if TYPE_CHECKING:
+    from . import initial_conditions
     from .diagnosed_imbalance import diagnosed_imbalance
     from .projection_deviations import projection_deviations
 
@@ -31,6 +32,7 @@ if TYPE_CHECKING:
 # ================================================================
 
 all_modules_by_origin = {
+    "obta_paper": ["initial_conditions"],
 }
 
 all_imports_by_origin = {
