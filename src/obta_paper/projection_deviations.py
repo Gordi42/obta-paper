@@ -1,5 +1,10 @@
 """Contains a function to compute deviations between two projectors."""
-import fridom.framework as fr
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import fridom.framework as fr
 
 
 def projection_deviations(
