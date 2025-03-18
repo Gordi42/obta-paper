@@ -1,10 +1,7 @@
 """Contains a function to compute the diagnosed imbalance."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    import fridom.framework as fr
+import fridom.framework as fr
 
 
 def diagnosed_imbalance(
@@ -37,4 +34,16 @@ def diagnosed_imbalance(
         The period over which the imbalance is diagnosed.
 
     """
-    # TODO(Silvano): Implement this function.
+    balanced_state = projector(state)
+
+    # create the model and run it
+    model = fr.Model(mset)
+    model.z = balanced_state
+    model.run(runlen=diagnosing_period)
+
+    # get the evolved state and balance it again
+    evolved_state = model.z
+    balanced_evolved_state = projector(evolved_state)
+
+    # compute the norm of the difference and return it
+    return evolved_state.norm_of_diff(balanced_evolved_state)
