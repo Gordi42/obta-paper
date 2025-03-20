@@ -1,4 +1,4 @@
-"""Show the fields of the initial condition for the shallow water jet setup."""
+"""Show the fields of the initial condition for the shallow water random setup."""
 from __future__ import annotations
 
 import fridom.shallowwater as sw
@@ -42,7 +42,7 @@ optimal_balance = sw.projection.OptimalBalance(
 )
 
 # create the initial condition
-z_ini = obta_paper.initial_conditions.ShallowWaterJet(mset)
+z_ini = obta_paper.initial_conditions.ShallowWaterRandom(mset)
 
 # balance the initial condition
 z_ini_bal = optimal_balance(z_ini)
@@ -64,7 +64,7 @@ z_evo_bal = optimal_balance(z_evo)
 # ================================================================
 #  Save the results
 # ================================================================
-data_path = "../data/examples/shallow_water_jet/"
+data_path = "../data/examples/shallow_water_random/"
 z_ini.to_netcdf(data_path + "z_ini.nc")
 z_ini_bal.to_netcdf(data_path + "z_ini_bal.nc")
 z_evo.to_netcdf(data_path + "z_evo.nc")
