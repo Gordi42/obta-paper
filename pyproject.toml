@@ -25,6 +25,7 @@ dependencies = [
   "numpy",
   "sweepexp",
   "mpi4py",
+  "matplotlib-label-lines",
 ]
 license = {file = "LICENSE"}
 
