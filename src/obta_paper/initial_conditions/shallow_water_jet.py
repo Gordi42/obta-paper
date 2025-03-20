@@ -47,7 +47,7 @@ class ShallowWaterJet(sw.State):
     def __init__(self,
                  mset: sw.ModelSettings,
                  wavenum: int = 5,
-                 waveamp: float = 1e-4,
+                 waveamp: float = 1e-3,
                  pos: tuple[float] = (0.25, 0.75),
                  width: float = 0.04) -> None:
         super().__init__(mset)
@@ -58,8 +58,8 @@ class ShallowWaterJet(sw.State):
         # Construct the zonal jets
         state = sw.State(mset)
         x, y = state.u.get_mesh()
-        state.u.arr = 2.5 * (ncp.exp(- ((y - pos[1] * ly)/(width * ncp.pi))**2) -
-                             ncp.exp(- ((y - pos[0] * ly)/(width * ncp.pi))**2) )
+        state.u.arr = (+ ncp.exp(- ((y - pos[1] * ly)/(width * ncp.pi))**2)
+                       - ncp.exp(- ((y - pos[0] * ly)/(width * ncp.pi))**2) )
 
         # Construct the perturbation
         kx_p = 2 * ncp.pi / lx * wavenum
