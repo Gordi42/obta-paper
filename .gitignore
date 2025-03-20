@@ -1,5 +1,7 @@
-# some data
+# custom ignores
 data/examples/
+data/reference/
+log/
 
 .vscode/
 
