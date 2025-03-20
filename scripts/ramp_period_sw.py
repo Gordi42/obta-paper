@@ -54,7 +54,7 @@ def compute_imbalance(initial_condition: str,
     optimal_balance = sw.projection.OptimalBalance(
         mset=mset,
         base_proj=geo_proj,
-        ramp_period=ramp_period,
+        ramp_period=ramp_period/rossby_number,
         ramp_type="exp",
         max_it=3,
     )
@@ -72,7 +72,7 @@ def compute_imbalance(initial_condition: str,
         mset=mset,
         state=z_ini,
         projector=optimal_balance,
-        diagnosing_period=10.0/rossby_number,
+        diagnosing_period=4*np.pi/rossby_number,
     )
 
     return {"imbalance": imbalance}
@@ -82,7 +82,7 @@ sweep = SweepExpMPI(
     func = compute_imbalance,
     parameters = {
         "initial_condition": ["jet", "random"],
-        "ramp_period": np.linspace(1, 10, 10),
+        "ramp_period": np.linspace(1, 15, 15),
         "rossby_number": [0.05, 0.1, 0.3],
     },
     return_values = {"imbalance": float},
