@@ -25,4 +25,4 @@ def projection_deviations(
         The second projector.
 
     """
-    # TODO(Silvano): Implement this function.
+    return projector_1(state).norm_of_diff(projector_2(state))
