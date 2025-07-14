@@ -1,10 +1,10 @@
-"""The unstable jet initial condition for the shallow water model."""
+"""The unstable jet initial condition for the Nonhydrostatic model."""
 from __future__ import annotations
 
-import fridom.shallowwater as sw
+import fridom.nonhydro as nh
 
 
-class ShallowWaterJet(sw.State):
+class NonhydroJet(nh.State):
 
     r"""
     Two opposing unstable jets.
@@ -15,16 +15,19 @@ class ShallowWaterJet(sw.State):
     on top of it. The jet is given by:
 
     .. math::
-        u = \exp\left(-\left(\frac{y - p_2 L_y}{\sigma \pi}\right)^2\right)
-            - \exp\left(-\left(\frac{y - p_1 L_y}{\sigma \pi}\right)^2\right)
+        u(x,y,z) = \left(u_0(x,y) - u_1(x,y)\right) \cos(2 \pi / L_z z)
+
+    with the zonal jets given by:
+
+    .. math::
+        u_i(x,y) = \exp\left(-\left(\frac{y - p_{i} L_y}{\sigma \pi}\right)^2\right)
 
     where :math:`L_y` is the domain length in the y-direction,
     :math:`p_i` are the relative positions of the jets in the y-direction,
-    and :math:`\\sigma` is the width of the jet. The perturbation
-    is given by:
+    and :math:`\\sigma` is the width of the jet. The perturbation is given by:
 
     .. math::
-        p = A \\sin \\left( \\frac{2 \\pi}{L_x} k_p x \\right)
+        v = A \sin \left( \frac{2 \pi}{L_x} k_p x \right)
 
     where :math:`A` is the amplitude of the perturbation and :math:`k_p` is the
     wavenumber of the perturbation.
@@ -45,25 +48,27 @@ class ShallowWaterJet(sw.State):
     """
 
     def __init__(self,
-                 mset: sw.ModelSettings,
-                 wavenum: int = 5,
-                 waveamp: float = 1e-3,
+                 mset: nh.ModelSettings,
+                 wavenum: int = 3,
+                 waveamp: float = 0.05,
                  pos: tuple[float] = (0.25, 0.75),
                  width: float = 0.04) -> None:
         super().__init__(mset)
         # Shortcuts
-        ncp = sw.config.ncp
-        lx, ly = self.grid.L
+        ncp = nh.config.ncp
+        lx, ly, lz = self.grid.L
 
         # Construct the zonal jets
-        state = sw.State(mset)
-        x, y = state.u.get_mesh()
+        state = nh.State(mset)
+        x, y, z = state.u.get_mesh()
         state.u.arr = (+ ncp.exp(- ((y - pos[1] * ly)/(width * ncp.pi))**2)
                        - ncp.exp(- ((y - pos[0] * ly)/(width * ncp.pi))**2) )
+        kz = 2 * ncp.pi / lz
+        state.u.arr *= ncp.cos(kz * z)
 
         # Construct the perturbation
         kx_p = 2 * ncp.pi / lx * wavenum
-        x, y = state.p.get_mesh()
-        state.p.arr = waveamp * ncp.sin(kx_p * x)
+        x, y, z = state.v.get_mesh()
+        state.v.arr = waveamp * ncp.sin(kx_p * x)
 
         self.fields = state.fields

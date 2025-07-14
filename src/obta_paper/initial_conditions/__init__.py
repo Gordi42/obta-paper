@@ -8,6 +8,7 @@ from lazypimp import setup
 #  Disable lazy loading for type checking
 # ================================================================
 if TYPE_CHECKING:  # pragma: no cover
+    from .nonhydro_jet import NonhydroJet
     from .shallow_water_jet import ShallowWaterJet
     from .shallow_water_random import ShallowWaterRandom
 
@@ -21,6 +22,7 @@ all_modules_by_origin = {
 base = "obta_paper.initial_conditions"
 
 all_imports_by_origin = {
+    f"{base}.nonhydro_jet": ["NonhydroJet"],
     f"{base}.shallow_water_jet": ["ShallowWaterJet"],
     f"{base}.shallow_water_random": ["ShallowWaterRandom"],
 }

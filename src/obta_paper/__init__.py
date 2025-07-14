@@ -24,6 +24,8 @@ from lazypimp import setup
 # ================================================================
 if TYPE_CHECKING:
     from . import initial_conditions
+    from .background_stratification import set_background_stratification
+    from .biharmonic_closure import BiharmonicClosure, HorizontalBiharmonic
     from .diagnosed_imbalance import diagnosed_imbalance
     from .projection_deviations import projection_deviations
 
@@ -36,6 +38,8 @@ all_modules_by_origin = {
 }
 
 all_imports_by_origin = {
+    "obta_paper.background_stratification": ["set_background_stratification"],
+    "obta_paper.biharmonic_closure": ["BiharmonicClosure", "HorizontalBiharmonic"],
     "obta_paper.diagnosed_imbalance": ["diagnosed_imbalance"],
     "obta_paper.projection_deviations": ["projection_deviations"],
 }
